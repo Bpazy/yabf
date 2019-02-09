@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Yet anthoer bilibili filter",
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "dev": "rollup -c -w"
   },
   "repository": {
     "type": "git",

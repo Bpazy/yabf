@@ -7,5 +7,10 @@ Yet Another Bilibili Filter
 **Tampermonkey is needed!**  
 [Click here to install](https://github.com/Bpazy/yabf/raw/master/dist/yabf.user.js)
 
-## what to filter?
+## What to filter?
 Whatever you don't like!
+
+## Develop
+1. Development: `npm run dev`. This will watch file changes and repackage it.
+2. Build: `npm run build`. Output file is under dist directory.  
+
