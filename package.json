@@ -1,0 +1,24 @@
+{
+  "name": "yabf",
+  "version": "1.0.0",
+  "description": "Yet anthoer bilibili filter",
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bpazy/yabf.git"
+  },
+  "author": "Bpazy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bpazy/yabf/issues"
+  },
+  "homepage": "https://github.com/Bpazy/yabf#readme",
+  "devDependencies": {
+    "@types/jquery": "^3.3.29",
+    "rollup-plugin-typescript": "^1.0.0",
+    "tslib": "^1.9.3",
+    "typescript": "^3.3.3"
+  }
+}
