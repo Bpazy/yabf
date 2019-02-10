@@ -1,11 +1,11 @@
 import {StringUtils} from "./util";
-import {RankFilter} from "./filter";
+import {Filter} from "./filter";
 import {upNameBlackList, videoNameBlackList} from "./blacklist";
 
 /**
  * 排行榜up名称过滤器
  */
-class UpNameFilter implements RankFilter {
+class UpNameFilter implements Filter<JQuery> {
 
     filter(rankItem: JQuery): boolean {
         const upName = rankItem.find('.content .info .detail a').text()
@@ -21,7 +21,7 @@ class UpNameFilter implements RankFilter {
 /**
  * 排行榜视频名称过滤器
  */
-class VideoNameFilter implements RankFilter {
+class VideoNameFilter implements Filter<JQuery> {
 
     filter(rankItem: JQuery): boolean {
         const videoName = rankItem.find('.content .info .title').text()
