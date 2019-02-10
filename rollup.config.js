@@ -1,4 +1,6 @@
-const rollupTypescript = require('rollup-plugin-typescript')
+import resolve from 'rollup-plugin-node-resolve'
+import commonjs from 'rollup-plugin-commonjs';
+import rollupTypescript from 'rollup-plugin-typescript'
 
 const banner = `// ==UserScript==
 // @name         yabf
@@ -10,14 +12,17 @@ const banner = `// ==UserScript==
 // @grant        none
 // @require      https://code.jquery.com/jquery-3.3.1.min.js
 // ==/UserScript==`
+
 export default {
     input: 'src/yabf.ts',
     output: {
         file: 'dist/yabf.user.js',
-        format: 'cjs',
+        format: 'iife',
         banner: banner,
     },
     plugins: [
-        rollupTypescript()
+        resolve(),
+        commonjs(),
+        rollupTypescript(),
     ],
 }

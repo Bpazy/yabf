@@ -1,14 +1,13 @@
-import {RankFilter} from "./filter";
-import {videoNameBlackList} from "./blacklist";
+import {Filter} from "./filter"
+import {videoNameBlackList} from "./blacklist"
+import {StringUtils} from "./util";
 
-class HomeFilter implements RankFilter {
-    filter(rankItem: JQuery): boolean {
-        const videoTitle = rankItem.find('p[title]').text()
-        const ele = videoNameBlackList.find(blackName => videoTitle === blackName)
-        console.log(videoTitle)
-        console.log(ele)
-        if (ele) {
-            rankItem.remove()
+class VideoNameFilter implements Filter<JQuery<Node>> {
+    filter(item: JQuery<Node>): boolean {
+        const videoName = item.find('p[title]').text()
+        const blackedName = videoNameBlackList.find(blackVideoName => StringUtils.contains(videoName, blackVideoName))
+        if (blackedName) {
+            item.remove()
             return true
         }
         return false
@@ -17,17 +16,30 @@ class HomeFilter implements RankFilter {
 
 function filterHomeRank() {
     // 排行榜过滤处理器
-    const filters = [new HomeFilter()]
-    console.log(filters)
+    const filters = [new VideoNameFilter()]
 
-    for (const item of $('.card-live-module')) {
-        console.log(item)
-        for (const filter of filters) {
-            const filtered = filter.filter($(item))
-            if (filtered) return
+    const mutationCallback = (mutationsList: MutationRecord[]) => {
+        for (const mutation of mutationsList) {
+            if (mutation.type != 'childList') continue
+            if (!(mutation.target instanceof Element)) continue
+
+            if (mutation.target.className == 'storey-box clearfix') {
+                const spreadModules = mutation.target.childNodes
+                for (const item of spreadModules) {
+                    for (const filter of filters) {
+                        const filtered = filter.filter($(item))
+                        if (filtered) return
+                    }
+                }
+            }
         }
+    }
+
+    const targetNode = document.querySelector(`#app`)
+    if (targetNode) {
+        const config = {attributes: true, childList: true, subtree: true}
+        new MutationObserver(mutationCallback).observe(targetNode, config)
     }
 }
 
-// TODO 首页是动态加载的，需额外处理
 export default filterHomeRank

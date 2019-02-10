@@ -18,8 +18,13 @@
   "homepage": "https://github.com/Bpazy/yabf#readme",
   "devDependencies": {
     "@types/jquery": "^3.3.29",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
     "rollup-plugin-typescript": "^1.0.0",
     "tslib": "^1.9.3",
     "typescript": "^3.3.3"
+  },
+  "dependencies": {
+    "ajax-hook": "^1.8.2"
   }
 }

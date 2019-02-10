@@ -1,7 +1,7 @@
-interface RankFilter {
-    filter(rankItem: JQuery): boolean
+interface Filter<T> {
+    filter(rankItem: T): boolean
 }
 
 export {
-    RankFilter
+    Filter
 }
