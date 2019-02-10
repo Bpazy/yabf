@@ -1,5 +1,6 @@
 // ==UserScript==
-// @name         yabf
+// @name         Yet Another Bilibili Filter
+// @name:zh-CN   Yet Another Bilibili Filter 看真正想看的哔哩哔哩
 // @namespace    https://github.com/Bpazy
 // @version      0.1
 // @description  yet another bilibili filter
