@@ -2,7 +2,7 @@
 // @name         Yet Another Bilibili Filter
 // @name:zh-CN   Yet Another Bilibili Filter 看真正想看的哔哩哔哩
 // @namespace    https://github.com/Bpazy
-// @version      0.1
+// @version      0.2
 // @description  yet another bilibili filter
 // @author       Bpazy
 // @match        *://*.bilibili.com/*
