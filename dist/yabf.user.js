@@ -2,7 +2,7 @@
 // @name         Yet Another Bilibili Filter
 // @name:zh-CN   Yet Another Bilibili Filter 看真正想看的哔哩哔哩
 // @namespace    https://github.com/Bpazy
-// @version      0.2
+// @version      0.3
 // @description  yet another bilibili filter
 // @author       Bpazy
 // @match        *://*.bilibili.com/*
@@ -57,6 +57,18 @@
             return false;
         }
     }
+    class SearchVideoNameDomChangeFilter {
+        filter(item) {
+            console.log(item);
+            const videoName = item.find('a[title].title').text();
+            const blackedName = videoNameBlackList.find(blackVideoName => StringUtils.contains(videoName, blackVideoName));
+            if (blackedName) {
+                item.remove();
+                return true;
+            }
+            return false;
+        }
+    }
     // 搜索过滤入口
     function filterSearch() {
         // 排行榜过滤处理器
@@ -67,6 +79,32 @@
                 if (filtered)
                     break;
             }
+        }
+        const domChangeFilters = [new SearchVideoNameDomChangeFilter()];
+        const mutationCallback = (mutationsList) => {
+            for (const mutation of mutationsList) {
+                if (mutation.type != 'childList')
+                    continue;
+                if (!(mutation.target instanceof Element))
+                    continue;
+                // 显示搜索结果的Dom元素
+                const videoContainerElement = $(mutation.target).find('.video-contain.clearfix');
+                if (videoContainerElement.length) {
+                    for (const item of videoContainerElement) {
+                        for (const filter of domChangeFilters) {
+                            const filtered = filter.filter($(item));
+                            if (filtered)
+                                break;
+                        }
+                    }
+                }
+            }
+        };
+        // Register Dom change observer
+        const targetNode = document.querySelector(`.all-contain`);
+        if (targetNode) {
+            const config = { attributes: true, childList: true, subtree: true };
+            new MutationObserver(mutationCallback).observe(targetNode, config);
         }
     }
     class HomeVideoNameFilter {
@@ -101,6 +139,7 @@
                 }
             }
         };
+        // Register Dom change observer
         const targetNode = document.querySelector(`#app`);
         if (targetNode) {
             const config = { attributes: true, childList: true, subtree: true };

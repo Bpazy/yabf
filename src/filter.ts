@@ -38,16 +38,55 @@ class SearchVideoNameFilter implements Filter<JQuery> {
     }
 }
 
+
+class SearchVideoNameDomChangeFilter implements Filter<JQuery<Node>> {
+    filter(item: JQuery<Node>): boolean {
+        console.log(item)
+        const videoName = item.find('a[title].title').text()
+        const blackedName = videoNameBlackList.find(blackVideoName => StringUtils.contains(videoName, blackVideoName))
+        if (blackedName) {
+            item.remove()
+            return true
+        }
+        return false
+    }
+}
+
 // 搜索过滤入口
 function filterSearch() {
     // 排行榜过滤处理器
     const filters = [new SearchUpNameFilter(), new SearchVideoNameFilter()]
-
     for (const rankItem of $('.video.matrix')) {
         for (const rankFilter of filters) {
             const filtered = rankFilter.filter($(rankItem))
             if (filtered) break
         }
+    }
+
+    const domChangeFilters = [new SearchVideoNameDomChangeFilter()]
+    const mutationCallback = (mutationsList: MutationRecord[]) => {
+        for (const mutation of mutationsList) {
+            if (mutation.type != 'childList') continue
+            if (!(mutation.target instanceof Element)) continue
+
+            // 显示搜索结果的Dom元素
+            const videoContainerElement = $(mutation.target).find('.video-contain.clearfix');
+            if (videoContainerElement.length) {
+                for (const item of videoContainerElement) {
+                    for (const filter of domChangeFilters) {
+                        const filtered = filter.filter($(item))
+                        if (filtered) break
+                    }
+                }
+            }
+        }
+    }
+
+    // Register Dom change observer
+    const targetNode = document.querySelector(`.all-contain`)
+    if (targetNode) {
+        const config = {attributes: true, childList: true, subtree: true}
+        new MutationObserver(mutationCallback).observe(targetNode, config)
     }
 }
 
@@ -85,6 +124,7 @@ function filterHomeRank() {
         }
     }
 
+    // Register Dom change observer
     const targetNode = document.querySelector(`#app`)
     if (targetNode) {
         const config = {attributes: true, childList: true, subtree: true}
