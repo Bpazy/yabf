@@ -25,6 +25,7 @@
     "typescript": "^3.3.3"
   },
   "dependencies": {
-    "ajax-hook": "^1.8.2"
+    "ajax-hook": "^1.8.2",
+    "jquery": "^3.3.1"
   }
 }

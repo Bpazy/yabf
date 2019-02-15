@@ -1,5 +1,6 @@
 import {upNameBlackList, videoNameBlackList} from "./blacklist";
 import {StringUtils} from "./util";
+import $ from 'jquery'
 
 interface Filter<T> {
     filter(rankItem: T): boolean
@@ -41,7 +42,6 @@ class SearchVideoNameFilter implements Filter<JQuery> {
 
 class SearchVideoNameDomChangeFilter implements Filter<JQuery<Node>> {
     filter(item: JQuery<Node>): boolean {
-        console.log(item)
         const videoName = item.find('a[title].title').text()
         const blackedName = videoNameBlackList.find(blackVideoName => StringUtils.contains(videoName, blackVideoName))
         if (blackedName) {
